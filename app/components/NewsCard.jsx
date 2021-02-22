@@ -1,44 +1,42 @@
 import React from "react";
 import { StyleSheet, Text, View, ImageBackground } from "react-native";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function NewsCard({ news }) {
   const imageUri = news.urlToImage;
   const currentTime = new Date().getHours();
-  const diff = currentTime - new Date(news.publishedAt).getHours();
+  const diff = Math.abs(currentTime - new Date(news.publishedAt).getHours());
 
-  return (
-    news.description &&
-    news.urlToImage != null && (
-      <TouchableWithoutFeedback style={styles.container}>
-        <View style={styles.imageHolder}>
-          <ImageBackground
-            source={{
-              uri: imageUri,
-            }}
-            style={styles.image}
-          />
+  return news.description && news.title && news.urlToImage != null ? (
+    <TouchableOpacity style={styles.container}>
+      <View style={styles.imageHolder}>
+        <ImageBackground
+          source={{
+            uri: imageUri,
+          }}
+          style={styles.image}
+        />
+      </View>
+
+      <View style={styles.textHolder}>
+        <View>
+          <Text style={styles.textHeader}>{news.title.trim()}</Text>
+          <Text style={styles.text}>
+            {news.description.length > 125
+              ? news.description.slice(0, 124).trim() + "..."
+              : news.description}
+          </Text>
         </View>
 
-        <View style={styles.textHolder}>
-          <View>
-            <Text style={styles.textHeader}>{news.title}</Text>
-            <Text style={styles.text}>
-              {news.description?.length > 125
-                ? news.description?.slice(0, 124).trim() + "..."
-                : news.description}
-            </Text>
-          </View>
-
-          <View>
-            <Text style={styles.textFooter}>
-              {news.source.name} • {diff === 1 ? `${diff} hour ago` : `${diff} hours ago`}
-            </Text>
-          </View>
+        <View>
+          <Text style={styles.textFooter}>
+            {news.source.name} •{" "}
+            {diff === 0 ? "now" : diff === 1 ? `${diff} hour ago` : `${diff} hours ago`}
+          </Text>
         </View>
-      </TouchableWithoutFeedback>
-    )
-  );
+      </View>
+    </TouchableOpacity>
+  ) : null;
 }
 
 const styles = StyleSheet.create({
@@ -61,7 +59,7 @@ const styles = StyleSheet.create({
   text: {
     color: "gray",
     fontSize: 14,
-    lineHeight: 22,
+    lineHeight: 20,
     marginVertical: 8,
   },
   textFooter: {
@@ -76,6 +74,6 @@ const styles = StyleSheet.create({
     display: "flex",
     flex: 1,
     justifyContent: "space-evenly",
-    padding: 12,
+    paddingHorizontal: 12,
   },
 });

@@ -5,7 +5,7 @@ import newsApi from "../api/news";
 import NewsCard from "../components/NewsCard";
 import Screen from "../components/Screen";
 import Separator from "../components/Separator";
-// import Search from "../components/Search";
+import Search from "../components/Search";
 
 export default function News() {
   const getTopHeadlines = () =>
@@ -27,7 +27,6 @@ export default function News() {
   return (
     <Screen>
       <View style={styles.container}>
-        {/* <Search /> */}
         <Text style={styles.header}>Top Headlines</Text>
         <View style={{ marginTop: 5, marginBottom: 40 }}>
           <FlatList
